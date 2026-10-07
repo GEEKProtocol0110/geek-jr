@@ -15,7 +15,7 @@ The site is deployed with GitHub Pages at `geekjr.xyz`. The workflow uses the re
 </p>
 
 
-Geek Jr turns short practice sessions into a simple learning habit. Families can choose an age level on the home page and follow a three-activity starting path, or explore the full library. Parents can set the round length and optional content in Parent settings. Children can begin without an account.
+Geek Jr turns short practice sessions into a simple learning habit. Families see one suggested activity for their age level, with two alternatives and the full library available when wanted. The **For grown-ups** page keeps round length and learning level up front; optional preferences and observation records open on demand. Children can begin without an account.
 
 
 ## Activities
@@ -23,7 +23,7 @@ Geek Jr turns short practice sessions into a simple learning habit. Families can
 
 | Activity | What happens |
 | --- | --- |
-| **Picture Cards** | See a picture or prompt, hear a word, and mark it “Got it” or “Need practice” |
+| **Picture Cards** | See a picture or prompt, hear a word, and mark it “Got it” or “Try it again” |
 | **Reading Path** | Parent sound play, eight guided sound-to-reading lessons, spelling, connected text, and optional letter/word quiz |
 | **Memory Match** | Match visible picture pairs for toddlers; flip cards for older learners |
 | **Patterns & Logic** | Choose what comes next |

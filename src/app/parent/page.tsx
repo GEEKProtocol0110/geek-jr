@@ -70,18 +70,18 @@ export default function ParentPage() {
 
   return (
     <main id="main-content" className="activity-page">
-      <section className="mx-auto max-w-4xl rounded-2xl bg-white p-6 shadow ring-1 ring-slate-200">
-        <div className="flex items-center justify-between gap-4">
-          <h1 className="text-3xl font-black text-slate-900">Parent settings</h1>
+      <section className="jr-parent">
+        <div className="jr-parent-heading">
+          <h1 className="text-3xl font-black text-slate-900">For grown-ups</h1>
           <Link href="/#activities" className="back-link">
             <span aria-hidden="true">←</span> All activities
           </Link>
         </div>
-        <p className="mt-3 text-sm text-slate-600">Choose the learning level and round length. Your settings stay on this device.</p>
+        <p className="jr-parent-intro">Make play fit your day. Choose a starting level and a short round. Settings and progress stay in this browser.</p>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <label className="grid gap-2 text-sm font-semibold text-slate-700">
-            Session size
+            Round length
             <select
               value={settings.sessionSize}
               onChange={(e) => update("sessionSize", Number(e.target.value) as SessionSize)}
@@ -89,30 +89,14 @@ export default function ParentPage() {
             >
               {SESSION_SIZES.map((size) => (
                 <option key={size} value={size}>
-                  {size}
+                  {size} questions / cards
                 </option>
               ))}
             </select>
           </label>
 
           <label className="grid gap-2 text-sm font-semibold text-slate-700">
-            Time limit (seconds)
-            <select
-              value={settings.timeLimitSec}
-              onChange={(e) => update("timeLimitSec", Number(e.target.value) as TimeLimitSec)}
-              className="rounded-lg border border-slate-300 px-3 py-2"
-            >
-              {TIME_LIMITS.map((sec) => (
-                <option key={sec} value={sec}>
-                  {sec === 0 ? "No timer" : sec}
-                </option>
-              ))}
-            </select>
-            <span className="text-xs font-normal text-slate-500">Ages 1–2 always play without a timer.</span>
-          </label>
-
-          <label className="grid gap-2 text-sm font-semibold text-slate-700">
-            Age tier
+            Learning level
             <select
               value={settings.ageTier}
               onChange={(e) => update("ageTier", e.target.value as AgeTier)}
@@ -126,6 +110,24 @@ export default function ParentPage() {
             </select>
           </label>
 
+        </div>
+        <details className="jr-disclosure"><summary><span><b>More preferences</b><small>Optional timer and Bible story questions.</small></span></summary><div className="jr-parent-panel grid gap-4 sm:grid-cols-2">
+      <label className="grid gap-2 text-sm font-semibold text-slate-700">
+            Optional timer
+            <select
+              value={settings.timeLimitSec}
+              onChange={(e) => update("timeLimitSec", Number(e.target.value) as TimeLimitSec)}
+              className="rounded-lg border border-slate-300 px-3 py-2"
+            >
+              {TIME_LIMITS.map((sec) => (
+                <option key={sec} value={sec}>
+                  {sec === 0 ? "No timer" : `${sec / 60} minute${sec === 60 ? "" : "s"}`}
+                </option>
+              ))}
+            </select>
+            <span className="text-xs font-normal text-slate-500">Ages 1–2 always play without a timer.</span>
+          </label>
+
           <label className="flex items-center gap-3 self-end rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700">
             <input
               type="checkbox"
@@ -135,12 +137,12 @@ export default function ParentPage() {
             />
             Include Bible story questions
           </label>
-        </div>
-
-        <h2 className="mt-8 text-xl font-bold text-slate-900">Progress on this device</h2>
-        <p className="mt-2 text-sm text-slate-600">Picture Cards: {practicedCards} unique cards practiced</p>
-        <p className="mt-1 text-sm text-slate-600">First Words: {practicedWords} unique words practiced</p>
-        <div className="mt-5 rounded-xl border border-teal-200 bg-teal-50 p-4">
+        </div></details>
+        <Link href="/#start" className="hero-primary mt-3">Ready? Let’s play <span aria-hidden="true">→</span></Link>
+        <h2 className="mt-8 text-xl font-bold text-slate-900">Your time together</h2>
+        <div className="jr-parent-summary"><div><strong>{practicedCards}</strong><span>Picture cards practiced</span></div><div><strong>{practicedWords}</strong><span>First words practiced</span></div></div>
+        <details className="jr-disclosure" id="word-observations"><summary><span><b>Word observations</b><small>Understanding, talking and familiar print.</small></span></summary><div className="jr-parent-panel">
+      <div className="mt-5 rounded-xl border border-teal-200 bg-teal-50 p-4">
           <h3 className="text-lg font-bold text-teal-950">What you have observed</h3>
           <p className="mt-2 text-sm text-teal-900">Understanding, talking, and recognizing print are separate skills. Old ‘Got it’ marks stay in your practice history; they do not count as observations here.</p>
           <div className="mt-4 grid gap-3 sm:grid-cols-3">
@@ -170,7 +172,9 @@ export default function ParentPage() {
           <Link href="/first-words" className="mt-4 inline-block min-h-12 rounded-lg bg-teal-800 px-4 py-3 font-bold text-white">Practice First Words</Link>
           <p className="mt-3 text-xs text-teal-900">These observations describe familiar words. Print recognition does not demonstrate decoding unfamiliar words. All progress stays in this browser; clearing site data removes it.</p>
         </div>
-        <div className="mt-5 rounded-xl border border-sky-200 bg-sky-50 p-4">
+        </div></details>
+        <details className="jr-disclosure" id="reading-observations"><summary><span><b>Reading observations</b><small>Sounds, blending, spelling and understanding.</small></span></summary><div className="jr-parent-panel">
+      <div className="mt-5 rounded-xl border border-sky-200 bg-sky-50 p-4">
           <h3 className="text-lg font-bold text-slate-950">Reading Path observations</h3>
           <p className="mt-2 text-sm text-slate-700">Sound knowledge, blending a new word, spelling, and reading with understanding are recorded separately. These are parent observations, not quiz scores or a reading-age assessment.</p>
           {Object.keys(readingProgress).length ? <div className="mt-4 overflow-x-auto"><table className="w-full text-left text-sm">
@@ -184,7 +188,9 @@ export default function ParentPage() {
           <Link href="/phonics" className="mt-4 inline-block min-h-12 rounded-lg bg-teal-800 px-4 py-3 font-bold text-white">Open Reading Path</Link>
           <p className="mt-3 text-xs text-slate-600">Review suggestions require independent observations on two different days for each skill. Needing help resets that skill’s review count. This is a practice rule, not proof of mastery. Records stay on this device and are not separate child profiles.</p>
         </div>
-        <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        </div></details>
+        <details className="jr-disclosure"><summary><span><b>Game practice</b><small>Rounds, answers and recent practice totals.</small></span></summary><div className="jr-parent-panel">
+      <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {GAME_KEYS.map((game) => {
             const summary = stats[game.id] ?? EMPTY;
 
@@ -198,6 +204,7 @@ export default function ParentPage() {
             );
           })}
         </div>
+        </div></details>
       </section>
     </main>
   );

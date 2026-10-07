@@ -1,5 +1,8 @@
 "use client";
 
+import Link from "next/link";
+import AudioIcon from "@/modules/common/AudioIcon";
+
 import { useEffect, useRef, useState } from "react";
 import { DEFAULT_SETTINGS, loadSettings } from "@/lib/settings";
 import { loadFromStorage, saveToStorage } from "@/lib/storage";
@@ -180,11 +183,11 @@ export default function TimedChoicesGame({ title, storageKey, prompts }: TimedCh
   return (
     <section className="mx-auto w-full max-w-xl rounded-2xl bg-white p-6 shadow-lg ring-1 ring-slate-200">
       <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
-      <p className="mt-1 text-sm text-slate-600">Age tier: {settings.ageTier}</p>
+      <p className="mt-1 text-sm text-slate-600">One little question at a time.</p>
 
       <div className="mt-4 grid grid-cols-3 gap-3 text-center text-sm">
         <div className="rounded-lg bg-slate-100 p-2">{settings.ageTier === "1-2" || settings.timeLimitSec === 0 ? "No timer" : `Timer: ${secondsLeft}s`}</div>
-        <div className="rounded-lg bg-slate-100 p-2">Progress: {Math.min(index + 1, sessionPrompts.length)}/{sessionPrompts.length}</div>
+        <div className="rounded-lg bg-slate-100 p-2">Question {Math.min(index + 1, sessionPrompts.length)} of {sessionPrompts.length}</div>
         <div className="rounded-lg bg-slate-100 p-2">Streak: {streak}</div>
       </div>
 
@@ -193,7 +196,7 @@ export default function TimedChoicesGame({ title, storageKey, prompts }: TimedCh
           <div className="mt-6 rounded-xl bg-teal-50 p-4 text-center text-lg font-semibold text-teal-950">
             {current.prompt}
             <button type="button" onClick={() => readText(current.prompt)} className="mt-3 block w-full rounded-lg bg-teal-900 px-4 py-3 text-base text-white hover:bg-teal-800">
-              🔊 Hear the question
+              <AudioIcon /> Hear the question
             </button>
           </div>
           <div className="mt-4 grid gap-3">
@@ -207,7 +210,7 @@ export default function TimedChoicesGame({ title, storageKey, prompts }: TimedCh
                 >
                   {choice}
                 </button>
-                <button type="button" aria-label={`Hear ${choice}`} onClick={() => readText(choice)} className="min-w-14 rounded-xl border border-teal-200 bg-teal-50 text-lg hover:bg-teal-100">🔊</button>
+                <button type="button" aria-label={`Hear ${choice}`} onClick={() => readText(choice)} className="min-w-14 rounded-xl border border-teal-200 bg-teal-50 text-lg hover:bg-teal-100"><AudioIcon /></button>
               </div>
             ))}
           </div>
@@ -215,12 +218,14 @@ export default function TimedChoicesGame({ title, storageKey, prompts }: TimedCh
         </>
       ) : (
         <div className="mt-6 rounded-xl bg-emerald-50 p-4 text-emerald-900">
-          <h2 className="text-xl font-bold">Session Complete</h2>
-          <p className="mt-2">This round: {roundCorrect} correct in {roundAttempts} attempts</p>
+          <h2 className="text-xl font-bold">Lovely trying!</h2>
+          <p className="mt-2">You gave it a go. Try another round, or take a little break.</p>
+          <details className="jr-disclosure"><summary><span><b>Grown-up: round summary</b><small>Answers and practice totals.</small></span></summary><div className="jr-options-content">          <p className="mt-2">This round: {roundCorrect} correct in {roundAttempts} attempts</p>
           <p>Correct on the first try: {firstTryCorrect} of {sessionPrompts.length} questions</p>
           <p className="mt-2 text-sm">These are practice results. Revisit the skill with a different example to check understanding.</p>
           <p>Best streak this round: {roundBestStreak}</p>
           <p className="mt-2 text-sm">All-time correct: {stats[settings.ageTier]?.correctCount ?? 0}</p>
+</div></details>
           <button
             type="button"
             onClick={restart}
@@ -228,6 +233,7 @@ export default function TimedChoicesGame({ title, storageKey, prompts }: TimedCh
           >
             Play again
           </button>
+          <Link href="/" className="jr-end-home">Back to play</Link>
         </div>
       )}
     </section>

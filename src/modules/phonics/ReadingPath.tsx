@@ -80,14 +80,27 @@ export default function ReadingPath() {
   if (!loaded) return <p role="status">Preparing your reading path…</p>;
 
   return <section className="rounded-2xl bg-white p-5 shadow ring-1 ring-slate-200 sm:p-7" aria-labelledby="reading-title">
-    <p className="text-xs font-bold tracking-widest text-teal-700">LANGUAGE → SOUNDS → WORDS → MEANING</p>
-    <h1 id="reading-title" className="mt-2 text-3xl font-black text-slate-950">Little steps into reading.</h1>
+    <p className="text-xs font-bold tracking-widest text-teal-700">Learning, together</p>
+    <h1 id="reading-title" className="mt-2 text-3xl font-black text-slate-950">Let’s read together.</h1>
     <p className="mt-3 text-slate-600">Start with talking and shared books. Try print when your child enjoys sound play and is interested in letters. Readiness leads the way.</p>
-    <div className="mt-5 flex flex-wrap gap-3" role="group" aria-label="Choose a learning focus">
+    <details className="jr-disclosure jr-options"><summary><span><b>Grown-up: choose a lesson</b><small>{print ? `Letters & words · ${lesson.title}` : "Listen & play"}</small></span></summary><div className="jr-options-content">
+      <div className="reading-focus mt-5 flex flex-wrap gap-3" role="group" aria-label="Choose a learning focus">
       <button className={button} aria-pressed={!print} onClick={() => setPrint(false)}>Listen & play</button>
       <button className={button} aria-pressed={print} onClick={() => setPrint(true)}>Letters & words</button>
     </div>
 
+      {print && <>
+      <div className="mt-6 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+        <label className="grid gap-2 text-sm font-bold text-slate-800">Choose a starter lesson
+          <select className="min-h-12 max-w-full rounded-xl border border-slate-300 bg-white px-3" value={index} onChange={(event) => begin(Number(event.target.value))}>
+            {READING_LESSONS.map((item, i) => <option key={item.id} value={i}>{i + 1}. {item.title} · {item.letters.split("").join(" ")}</option>)}
+          </select>
+        </label>
+        <button className={button} onClick={() => begin(Math.max(0, suggested))}>Suggested review</button>
+      </div>
+      <p className="mt-2 text-xs text-slate-600">{suggested < 0 ? "All starter lessons have observations on two days. Revisit a favorite, then continue with a fuller reading program." : `Suggested: lesson ${suggested + 1}. A review suggestion uses observations on two different days, not tap scores.`} Parents can choose any lesson; review earlier sounds first if needed.</p>
+      </>}
+    </div></details>
     {!print ? <div className="mt-6 rounded-xl bg-amber-50 p-5">
       <h2 className="text-2xl font-bold text-slate-950">A sound adventure, together.</h2>
       <p className="mt-2 text-slate-700">For a one-year-old, begin here: responsive talk, songs, gestures, and real objects. No reading test or timer.</p>
@@ -99,18 +112,12 @@ export default function ReadingPath() {
       <p className="mt-4 text-sm text-slate-600">Stop while it is still fun. Show the real object and share a book away from the screen.</p>
       <Link href="/first-words?lesson=play" className={`${button} mt-5 inline-block`}>Picture words & talking ↗</Link>
     </div> : <>
-      <div className="mt-6 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
-        <label className="grid gap-2 text-sm font-bold text-slate-800">Choose a starter lesson
-          <select className="min-h-12 max-w-full rounded-xl border border-slate-300 bg-white px-3" value={index} onChange={(event) => begin(Number(event.target.value))}>
-            {READING_LESSONS.map((item, i) => <option key={item.id} value={i}>{i + 1}. {item.title} · {item.letters.split("").join(" ")}</option>)}
-          </select>
-        </label>
-        <button className={button} onClick={() => begin(Math.max(0, suggested))}>Suggested review</button>
-      </div>
-      <p className="mt-2 text-xs text-slate-600">{suggested < 0 ? "All starter lessons have observations on two days. Revisit a favorite, then continue with a fuller reading program." : `Suggested: lesson ${suggested + 1}. A review suggestion uses observations on two different days, not tap scores.`} Parents can choose any lesson; review earlier sounds first if needed.</p>
+      <p className="jr-step-marker" role="status">Step {step + 1} of {steps.length} · {steps[step]}</p>
+      <details className="jr-disclosure"><summary><span><b>All lesson steps</b><small>Jump to a familiar step.</small></span></summary><div className="jr-options-content">
       <ol className="mt-5 flex flex-wrap gap-2" aria-label="Lesson steps">
         {steps.map((label, i) => <li key={label}><button className={`min-h-11 rounded-lg border px-3 py-2 text-sm font-bold ${step === i ? "border-teal-800 bg-teal-800 text-white" : "border-slate-300 text-slate-700"}`} aria-current={step === i ? "step" : undefined} onClick={() => { setStep(i); setMessage(""); }}>{i + 1}. {label}</button></li>)}
       </ol>
+        </div></details>
       <div className="mt-5 rounded-xl border border-teal-200 bg-teal-50 p-5">
         <p className="text-xs font-bold uppercase tracking-widest text-teal-800">Lesson {index + 1} / {READING_LESSONS.length} · No timer</p>
         <h2 className="mt-1 text-xl font-bold text-slate-950">{lesson.title}</h2>
@@ -177,6 +184,6 @@ export default function ReadingPath() {
       <p className="mt-3 text-sm text-slate-700">These eight original lessons cover common single-letter sounds and five short vowels, then blending, spelling, and short connected text. Continue afterward with a full sequence for digraphs, vowel spellings, longer words, fluent reading, and comprehension. Share richer books aloud throughout.</p>
       <p className="mt-3 text-sm text-slate-700">The <a className="underline" href="https://ies.ed.gov/ncee/wwc/PracticeGuide/21" target="_blank" rel="noopener noreferrer">IES foundational reading guide ↗</a> supports linking sounds to letters, decoding and writing, and connected text for kindergarten–grade 3. It is not evidence for teaching independent reading at age one, and Geek Jr’s lessons have not been evaluated in a trial.</p>
     </details>
-    <Link href="/parent" className="mt-4 inline-block min-h-11 text-sm font-bold text-teal-800 underline">View reading observations ↗</Link>
+    <Link href="/parent/#reading-observations" className="mt-4 inline-block min-h-11 text-sm font-bold text-teal-800 underline">View reading observations ↗</Link>
   </section>;
 }
