@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
+import DisclosureLinks from "@/modules/common/DisclosureLinks";
 
 const assetBasePath = process.env.GITHUB_PAGES === "true" && process.env.GEEK_JR_CUSTOM_DOMAIN !== "geekjr.xyz" ? "/geek-jr" : "";
 
@@ -27,16 +28,17 @@ export default function RootLayout({
               <span className="brand-wordmark">GEEK<span>JR.</span><small>BY GEEK PROTOCOL</small></span>
             </Link>
             <nav aria-label="Main navigation" className="site-nav">
-              <Link href="/#activities">Activities</Link>
-              <Link href="/parent" className="nav-parent">Parent settings <span aria-hidden="true">↗</span></Link>
+              <Link href="/#activities">Play</Link>
+              <Link href="/parent" className="nav-parent">For grown-ups <span aria-hidden="true">↗</span></Link>
             </nav>
           </div>
         </header>
+        <DisclosureLinks />
         {children}
         <footer className="site-footer">
           <span>GEEK JR. <small>BY GEEK PROTOCOL</small></span>
           <p>Little questions. Big curiosity.</p>
-          <a href="https://geekprotocol.xyz" target="_blank" rel="noreferrer">Explore Geek Protocol <span aria-hidden="true">↗</span></a>
+          <a href="https://geekprotocol.xyz" target="_blank" rel="noreferrer">Geek Protocol HQ · for older explorers <span aria-hidden="true">↗</span></a>
         </footer>
       </body>
     </html>

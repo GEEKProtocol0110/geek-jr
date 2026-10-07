@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useEffect, useRef, useState } from "react";
 import pairs from "@/data/memory/pairs.json";
 import { DEFAULT_SETTINGS, loadSettings } from "@/lib/settings";
@@ -179,7 +181,7 @@ export default function MemoryGame() {
           <h2 className="text-xl font-bold">{matched.length === tiles.length / 2 ? "All pairs found!" : "Time is up"}</h2>
           <p className="mt-2">This round: {roundCorrect} pairs in {roundAttempts} tries</p>
           <p>Best streak this round: {roundBest}</p>
-          <button type="button" onClick={playAgain} className="mt-4 rounded-lg bg-emerald-700 px-4 py-3 font-semibold text-white hover:bg-emerald-800">Play again</button>
+          <button type="button" onClick={playAgain} className="mt-4 rounded-lg bg-emerald-700 px-4 py-3 font-semibold text-white hover:bg-emerald-800">Play again</button><Link href="/" className="jr-end-home">Back to play</Link>
         </div>
       )}
     </section>

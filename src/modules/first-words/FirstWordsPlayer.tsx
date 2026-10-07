@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import AudioIcon from "@/modules/common/AudioIcon";
 import { useEffect, useRef, useState } from "react";
 import cards from "@/data/decks/first-words.json";
 import { FIRST_WORDS_KEY, OBSERVATION_LEVELS, WORD_SKILLS, pickWordSession, recordWordObservations, WordCard, WordCardProgress, WordObservations, WordSkill } from "@/lib/firstWords";
@@ -110,10 +111,11 @@ export default function FirstWordsPlayer() {
   const levels = focus === "print" ? WORD_SKILLS.filter((skill) => skill.id === "print") : WORD_SKILLS.filter((skill) => skill.id !== "print");
   const categories = [...new Set(wordCards.map((card) => card.category))];
   return (
-    <section className="mx-auto w-full max-w-2xl rounded-2xl bg-white p-5 shadow-lg ring-1 ring-slate-200 sm:p-7">
+    <section className="jr-first-words mx-auto w-full max-w-2xl rounded-2xl bg-white p-5 shadow-lg ring-1 ring-slate-200 sm:p-7">
       <p className="text-xs font-bold uppercase tracking-widest text-teal-700">Parent guided · No timer</p>
       <h1 className="mt-2 text-3xl font-black text-slate-900">First Words</h1>
       <p className="mt-2 text-sm text-slate-600">Look, say, and play together. Follow your child’s interest and finish whenever they are ready.</p>
+      <details className="jr-disclosure jr-options"><summary><span><b>Grown-up options</b><small>Choose a lesson, category or learning focus.</small></span></summary><div className="jr-options-content">
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
         <label className="grid gap-1 text-sm font-semibold text-slate-700">Choose a little lesson
           <select value={lesson} onChange={(event) => startRound(event.target.value, "")} className="min-h-12 rounded-xl border border-slate-300 bg-white px-3">
@@ -140,16 +142,17 @@ export default function FirstWordsPlayer() {
         <p className="mt-2">Leave anything you did not observe blank. These are parent observations, not a reading assessment. Recognizing familiar print does not prove a child can decode new words.</p>
         <p className="mt-2">Audio uses your device’s voice. You can always read aloud instead.</p>
       </details>
+      </div></details>
       {current ? (
         <>
           <div className="mt-5 flex items-center justify-between gap-3 text-sm text-slate-600"><span>{current.category}</span><span>Card {index + 1} of {session.length}</span></div>
           <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-label="Round progress" aria-valuenow={index} aria-valuemin={0} aria-valuemax={session.length}>
             <div className="h-full rounded-full bg-teal-500 transition-all" style={{ width: `${(index / session.length) * 100}%` }} />
           </div>
-          <div className="mt-5 rounded-2xl bg-teal-50 px-4 py-6 text-center">
+          <div className="jr-play-stage mt-5 px-4 py-6 text-center">
             {focus !== "print" && PICTURE_WORD_IDS.has(current.id) && <WordPicture word={current.word} className="mx-auto mb-3 h-44 w-48 sm:h-52 sm:w-56" />}
             <p className="break-words text-5xl font-black tracking-tight text-teal-950 sm:text-6xl">{current.word}</p>
-            <button type="button" onClick={() => speak(current.word)} className="mt-5 min-h-12 rounded-xl bg-teal-900 px-5 py-3 font-bold text-white hover:bg-teal-800">🔊 Hear the word</button>
+            <button type="button" onClick={() => speak(current.word)} className="mt-5 min-h-12 rounded-xl bg-teal-900 px-5 py-3 font-bold text-white hover:bg-teal-800"><AudioIcon /> Hear the word</button>
             {audioMessage && <p className="mt-3 text-sm text-teal-900" role="status">{audioMessage}</p>}
           </div>
           <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
@@ -157,7 +160,8 @@ export default function FirstWordsPlayer() {
             <p className="mt-2 text-base text-slate-800">{focus === "print" ? "Before naming it, ask what the printed word says. Do not point to a picture or play the answer first. If you help, record ‘With help.’" : togetherPrompt(current)}</p>
             {focus !== "print" && <p className="mt-2 text-sm text-slate-600">If your child responds, add a short phrase. Try a different example another day.</p>}
           </div>
-          <div className="mt-5 space-y-4">
+          <details className="jr-disclosure jr-observations"><summary><span><b>Grown-up: what did you notice?</b><small>Record understanding or talking when you’re ready.</small></span></summary>
+          <div className="observation-fields space-y-4">
             <p className="text-sm font-bold text-slate-800">What did you observe today?</p>
             {levels.map((skill) => <fieldset key={`${current.id}-${skill.id}`} className="rounded-xl border border-slate-200 p-3">
               <legend className="px-1 text-sm font-bold text-slate-900">{skill.label}</legend>
@@ -169,21 +173,24 @@ export default function FirstWordsPlayer() {
               </div>
             </fieldset>)}
           </div>
-          <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-            <button type="button" onClick={() => nextWord(false)} className="min-h-12 rounded-xl border border-slate-300 px-4 py-3 font-semibold text-slate-600">Skip this word</button>
+          <div className="parent-save flex flex-wrap items-center justify-end gap-3">
             <button type="button" disabled={!Object.keys(observations).length} onClick={() => nextWord(true)} className="min-h-12 rounded-xl bg-teal-800 px-5 py-3 font-bold text-white hover:bg-teal-900 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-600">Save & next word</button>
           </div>
+          </details>
+          <div className="jr-next-word"><button type="button" onClick={() => nextWord(false)} className="min-h-12 rounded-xl bg-teal-800 px-5 py-3 font-bold text-white hover:bg-teal-900">Next word <span aria-hidden="true">→</span></button></div>
+          <p className="mt-2 text-xs text-slate-500">Next word moves on without saving an observation.</p>
           <p className="mt-3 text-xs text-slate-500">{earlyPractice ? "You chose extra practice. This is not a delayed review." : "Due words are reviewed before new words. Already practiced words wait until their next review."}</p>
         </>
       ) : (
         <div className="mt-6 rounded-xl bg-teal-50 p-5 text-teal-950" role="status">
-          <h2 className="text-xl font-bold">{session.length ? "A little learning, together" : "No words due in this selection"}</h2>
-          <p className="mt-2">{session.length ? `You saved observations for ${completed} words. Now try one of them with a real object or in a book.` : nextDue.length ? "You have practiced these words recently. Choose another lesson or revisit them on a later day." : "Choose a different lesson to find some words."}</p>
+          <h2 className="text-xl font-bold">{session.length ? "Lovely exploring!" : "No words due in this selection"}</h2>
+          <p className="mt-2">{session.length ? `You explored ${session.length} words together. Now look for one around you or in a book.` : nextDue.length ? "You have practiced these words recently. Choose another lesson or revisit them on a later day." : "Choose a different lesson to find some words."}</p>
           <div className="mt-4 flex flex-wrap gap-3">
             <button type="button" onClick={() => startRound()} className="min-h-12 rounded-xl bg-teal-800 px-4 py-3 font-bold text-white">Check review & new words</button>
             {pool.length > 0 && <button type="button" onClick={() => startRound(lesson, category, focus, true)} className="min-h-12 rounded-xl border border-teal-600 px-4 py-3 font-bold text-teal-900">Practice this selection again</button>}
           </div>
-          <Link href="/parent" className="mt-5 inline-block font-bold underline">See your parent observations</Link>
+          <p className="mt-3 text-sm">Grown-up observations saved: {completed}.</p>
+          <Link href="/" className="jr-end-home">Back to play</Link><Link href="/parent/#word-observations" className="mt-5 inline-block font-bold underline">See your parent observations</Link>
         </div>
       )}
     </section>
