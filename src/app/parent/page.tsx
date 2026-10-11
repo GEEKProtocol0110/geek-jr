@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import LearnerProfiles from "@/modules/common/LearnerProfiles";
 import { useEffect, useState } from "react";
 import { DEFAULT_SETTINGS, loadSettings, saveSettings } from "@/lib/settings";
 import { loadFromStorage } from "@/lib/storage";
@@ -78,6 +79,7 @@ export default function ParentPage() {
           </Link>
         </div>
         <p className="jr-parent-intro">Make play fit your day. Choose a starting level and a short round. Settings and progress stay in this browser.</p>
+        <LearnerProfiles />
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <label className="grid gap-2 text-sm font-semibold text-slate-700">
@@ -186,7 +188,7 @@ export default function ParentPage() {
             </tr>)}</tbody>
           </table></div> : <p className="mt-4 text-sm text-slate-700">No reading observations yet. Begin with listening and talking, then try letters when ready.</p>}
           <Link href="/phonics" className="mt-4 inline-block min-h-12 rounded-lg bg-teal-800 px-4 py-3 font-bold text-white">Open Reading Path</Link>
-          <p className="mt-3 text-xs text-slate-600">Review suggestions require independent observations on two different days for each skill. Needing help resets that skill’s review count. This is a practice rule, not proof of mastery. Records stay on this device and are not separate child profiles.</p>
+          <p className="mt-3 text-xs text-slate-600">Review suggestions require independent observations on two different days for each skill. Needing help resets that skill’s review count. This is a practice rule, not proof of mastery. Records belong to the selected learner and stay on this device.</p>
         </div>
         </div></details>
         <details className="jr-disclosure"><summary><span><b>Game practice</b><small>Rounds, answers and recent practice totals.</small></span></summary><div className="jr-parent-panel">

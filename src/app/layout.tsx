@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
+import LearnerBadge from "@/modules/common/LearnerBadge";
 import DisclosureLinks from "@/modules/common/DisclosureLinks";
 
 const assetBasePath = process.env.GITHUB_PAGES === "true" && process.env.GEEK_JR_CUSTOM_DOMAIN !== "geekjr.xyz" ? "/geek-jr" : "";
@@ -33,6 +34,7 @@ export default function RootLayout({
             </nav>
           </div>
         </header>
+        <LearnerBadge />
         <DisclosureLinks />
         {children}
         <footer className="site-footer">

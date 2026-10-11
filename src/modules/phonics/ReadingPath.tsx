@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { loadSettings } from "@/lib/settings";
-import { loadFromStorage } from "@/lib/storage";
+import { loadFromStorage, saveToStorageOrThrow } from "@/lib/storage";
 import { cleanReadingProgress, lessonReady, READING_KEY, READING_LESSONS, READING_SKILLS, recordReading, SOUND_CUES, suggestedReadingLesson, taughtLetters, ReadingLevel, ReadingProgress, ReadingSkill } from "@/lib/reading";
 
 const steps = ["Sounds", "Blend", "Build", "Read", "Observe"];
@@ -48,7 +48,7 @@ export default function ReadingPath() {
     const next = recordReading(progress, lesson.id, observations, now);
     setProgress(next);
     try {
-      window.localStorage.setItem(READING_KEY, JSON.stringify(next));
+      saveToStorageOrThrow(READING_KEY, next);
       setMessage("Saved on this device. Follow your child’s interest; review on another day before moving on.");
     } catch {
       setMessage("This browser could not save progress. Your observations are available for this visit only.");
@@ -60,7 +60,7 @@ export default function ReadingPath() {
     setRemoved({ id: lesson.id, observations: next[lesson.id] });
     delete next[lesson.id];
     setProgress(next); setObservations({});
-    try { window.localStorage.setItem(READING_KEY, JSON.stringify(next)); setMessage("Lesson observations removed. You can undo this before leaving the lesson."); }
+    try { saveToStorageOrThrow(READING_KEY, next); setMessage("Lesson observations removed. You can undo this before leaving the lesson."); }
     catch { setMessage("Removed for this visit only; this browser could not update saved progress."); }
   }
 
@@ -68,7 +68,7 @@ export default function ReadingPath() {
     if (!removed) return;
     const next = { ...progress, [removed.id]: removed.observations };
     setProgress(next); setRemoved(null);
-    try { window.localStorage.setItem(READING_KEY, JSON.stringify(next)); setMessage("Lesson observations restored."); }
+    try { saveToStorageOrThrow(READING_KEY, next); setMessage("Lesson observations restored."); }
     catch { setMessage("Restored for this visit only; this browser could not update saved progress."); }
   }
 

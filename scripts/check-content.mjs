@@ -37,3 +37,5 @@ for (const [name, file, kind] of sources) {
 }
 
 await import('./check-learning.mjs');
+
+await import("./check-family.mjs");
