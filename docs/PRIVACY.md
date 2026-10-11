@@ -1,13 +1,9 @@
 # Privacy and storage
 
-Geek Jr currently has no account system or backend. It stores age range, parent preferences, card practice buckets, and game totals in the browser's localStorage. Closing the page keeps that data; clearing site data removes it. There is no cross-device sync or child profile.
+Geek Jr has no account system or backend. Up to eight learner nicknames, age ranges, parent preferences, card practice buckets and game totals are stored in this browser. First Words adds per-word observations and dates. Reading Path adds per-lesson skills, observation timestamps and up to two independent-observation dates. Profiles separate these records within one local family document, `geekjr_family_v1`. Earlier keys are preserved unchanged during migration into **My learner**. Clearing site data removes saved progress.
 
-Speech playback uses the browser's speech synthesis feature and the voice choices available on the device. Browser or operating-system voice behavior can vary. The site header links to the Geek Protocol website; following that link leaves Geek Jr.
+The parent page can download a JSON backup containing learner nicknames, preferences and observations. Import parses the file on this device, shows a preview, then adds restored profiles when the parent chooses Import. Existing progress is not overwritten. An empty default placeholder is replaced. The file is not uploaded. Keep backups private and store them somewhere safe; downloaded copies remain outside the app after site data is cleared. There is no automatic cross-device synchronization.
 
-This document describes the current app implementation. Revisit it before adding accounts, analytics, external content, or any feature that stores children's personal information.
+The app uses no microphone, recordings, child analytics or automatic speech scoring. Speech playback uses the browser's speech synthesis and available device voices. Operating-system voice behavior may vary. Parent links to GEEK HQ, Oxford Owl and IES open those external services only when clicked; no observation records are included in the links. No third-party video is embedded.
 
-First Words also stores per-word parent observations for understanding, saying/attempting a word, and recognizing print, with dates and independent-observation counts. These remain in the existing local practice record on this browser. They are not uploaded. The app uses no microphone or automatic speech scoring. These records describe one device's practice and are not separate child profiles.
-
-Reading Path stores per-lesson parent observations for letter sounds, blending, spelling, and reading with understanding under `geekjr_reading_v1`. Each includes a level, observation timestamp, and up to two distinct local calendar dates for independent observations. These remain in localStorage and are not uploaded. The path reports storage failures. The parent dashboard and review suggestions use these records; quiz totals are separate. One shared browser record is not a separate child profile or backup.
-
-Reading Path uses parent sound modeling and has no microphone, hosted voice recording, or third-party video embed. Parent guide links to Oxford Owl and IES open those external websites only when clicked; their services have their own privacy behavior. No child information is included in the outbound links.
+These records describe parent observations, not a validated mastery assessment. Review this document before adding accounts, analytics or a service that processes children's personal information.

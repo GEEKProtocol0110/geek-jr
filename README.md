@@ -5,7 +5,7 @@
 The site is deployed with GitHub Pages at `geekjr.xyz`. The workflow uses the repository Actions variable `GEEK_JR_CUSTOM_DOMAIN=geekjr.xyz` to build root-relative routes and assets for the custom domain. See [GitHub's custom domain guide](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).
 
 
-<p align="center"><strong>Curiosity starts here.</strong><br/>Six focused learning activities for children ages 1–10, from Geek Protocol.</p>
+<p align="center"><strong>Curiosity starts here.</strong><br/>Seven focused learning activities for children ages 1–10, from Geek Protocol.</p>
 
 
 <p align="center">
@@ -24,7 +24,8 @@ Geek Jr turns short practice sessions into a simple learning habit. Families see
 | Activity | What happens |
 | --- | --- |
 | **Picture Cards** | See a picture or prompt, hear a word, and mark it “Got it” or “Try it again” |
-| **Reading Path** | Parent sound play, eight guided sound-to-reading lessons, spelling, connected text, and optional letter/word quiz |
+| **Reading Path** | Parent sound play, ten guided sound-to-reading lessons, spelling, connected text, and optional letter/word quiz |
+| **Counting Garden** | Count illustrated objects and match number representations |
 | **Memory Match** | Match visible picture pairs for toddlers; flip cards for older learners |
 | **Patterns & Logic** | Choose what comes next |
 | **Story Sequence** | Complete a short sequence; optional Bible story questions |
@@ -102,8 +103,14 @@ The existing `/phonics` route now starts with a parent-guided reading path. Ages
 
 Each lesson includes parent pronunciation cues, guided blending, letter building from a dictated word, short text using already introduced letters, a comprehension discussion, and an unused practice-list word for a fresh decoding observation. The helper word `a` is explicitly introduced separately before it appears in text. The first lessons use brief lines; later ones use two linked sentences.
 
-Four skills have separate parent observations: letter sounds, fresh-word blending, spelling, and reading with understanding. Independent observations on two different days guide review suggestions; same-day saves cannot inflate that count. A need for help resets only that skill's count. This is a practice rule, not a validated mastery test. Saved observations are local, shared on the device, and shown in Parent settings; quiz scores never become reading evidence. Parents may choose any lesson regardless of suggestions. The site explains when browser storage cannot save a reading observation.
+Four skills have separate parent observations: letter sounds, fresh-word blending, spelling, and reading with understanding. Independent observations on two different days guide review suggestions; same-day saves cannot inflate that count. A need for help resets only that skill's count. This is a practice rule, not a validated mastery test. Saved observations are local, separate for each learner, and shown in Parent settings; quiz scores never become reading evidence. Parents may choose any lesson regardless of suggestions. The site explains when browser storage cannot save a reading observation.
 
 There is no device phoneme playback or hosted professional phonics audio in this path. Parent modeling is supported by an outbound link to [Oxford Owl's teacher pronunciation and blending videos](https://home.oxfordowl.co.uk/phonics-videos/); no third-party video is embedded or loaded automatically, and no recording is copied. The old synthetic pseudo-phoneme quiz choices have been replaced with letter/word questions. The optional quiz retains its prior storage key. Licensed, educator-reviewed recordings remain a future requirement.
 
 The lesson approach draws on the [IES K–3 foundational reading guide](https://ies.ed.gov/ncee/wwc/PracticeGuide/21): linking sounds to print, decoding and writing, and connected text. That evidence concerns kindergarten–grade 3, not independent reading at age one. Geek Jr's new lessons have not been validated in a learning trial. Content checks verify taught-letter coverage, helper words, transfer-word separation, pronunciation cue coverage, and progress rules.
+
+## Learners and progress backups
+
+For grown-ups now supports up to eight named local learner profiles. Each keeps preferences, practice buckets, game totals, First Words and Reading Path observations separately. Earlier browser records are preserved under **My learner**; their original storage keys are left unchanged. Finish an activity before switching learners. A page keeps writing to the learner it started with even if another tab switches profiles.
+
+Download a JSON backup from the parent page, then choose it on another device to preview learner names before importing. Restore adds separate profiles with new IDs rather than overwriting saved learners; an empty default placeholder is replaced. Invalid, unsupported or oversized backups are rejected before any write. Corrupt existing records are preserved, and blocked/quota-limited storage cannot partially import a family. Nicknames and observation records are private family information: keep the downloaded file private. Profiles and backups do not provide accounts or automatic sync.
