@@ -14,9 +14,13 @@ export default function LearnerProfiles() {
     try { writeFamily(localStorage,next); window.location.reload(); }
     catch { setMessage('This browser could not save the change. Existing saved records were not replaced.'); }
   }
+  function switchLearner(id: string) {
+    try { const current=readFamily(localStorage); if(!current.learners.some(child=>child.id===id)) throw new Error('Learner unavailable'); save({...current,activeId:id}); }
+    catch { setMessage('The saved learner list changed. Reload this page to choose again.'); }
+  }
   function add() {
     if (!family) return;
-    try { const child = newLearner(name); const next: Family = {...family,activeId:child.id,learners:[...family.learners,child]}; parseFamily(JSON.stringify(next)); save(next); }
+    try { const current=readFamily(localStorage); const child = newLearner(name); const next: Family = {...current,activeId:child.id,learners:[...current.learners,child]}; parseFamily(JSON.stringify(next)); save(next); }
     catch { setMessage('Use a nickname of 1–30 characters. Up to eight learners fit on this device.'); }
   }
   function download() {
@@ -39,7 +43,7 @@ export default function LearnerProfiles() {
   return <section className="mt-6 rounded-2xl border border-teal-200 bg-teal-50 p-5" aria-labelledby="learners-title">
     <h2 id="learners-title" className="text-xl font-bold text-teal-950">Each learner, their own path.</h2>
     <p className="mt-2 text-sm text-teal-900">Choose a learner before beginning an activity. Nicknames, preferences and progress stay in this browser. These profiles do not sign in or sync automatically.</p>
-    {family && <><label className="mt-4 grid gap-2 font-bold text-teal-950">Current learner<select className="min-h-12 rounded-xl border bg-white px-3" value={family.activeId} onChange={event => save({...family,activeId:event.target.value})}>{family.learners.map(child => <option key={child.id} value={child.id}>{child.name}</option>)}</select></label>
+    {family && <><label className="mt-4 grid gap-2 font-bold text-teal-950">Current learner<select className="min-h-12 rounded-xl border bg-white px-3" value={family.activeId} onChange={event => switchLearner(event.target.value)}>{family.learners.map(child => <option key={child.id} value={child.id}>{child.name}</option>)}</select></label>
     <p className="mt-2 text-xs text-teal-900">“My learner” preserves records saved before separate profiles were added. Switching reloads this page; finish any activity first.</p>
     <div className="mt-4 flex flex-wrap items-end gap-3"><label className="grid gap-2 font-bold text-teal-950">New learner nickname<input className="min-h-12 rounded-xl border bg-white px-3" value={name} maxLength={30} onChange={event=>setName(event.target.value)} autoComplete="off" /></label><button className={button} onClick={add} disabled={!name.trim() || family.learners.length>=8}>Add learner</button></div>
     <details className="mt-5"><summary className="min-h-12 cursor-pointer font-bold text-teal-950">Back up or restore progress</summary><p className="my-3 text-sm text-teal-900">A backup can move records to another device. Import adds restored learners and keeps existing profiles. Existing learners stay selected. An empty “My learner” placeholder is replaced by restored profiles. Files are processed on this device.</p><button className={button} onClick={download}>Download progress backup</button><label className="mt-4 grid gap-2 font-bold text-teal-950">Choose a progress backup<input type="file" accept=".json,application/json" onChange={event=>void inspect(event.target.files?.[0])} className="max-w-full text-sm" /></label>
