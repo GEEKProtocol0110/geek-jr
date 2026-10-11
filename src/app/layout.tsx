@@ -8,7 +8,7 @@ const assetBasePath = process.env.GITHUB_PAGES === "true" && process.env.GEEK_JR
 
 export const metadata: Metadata = {
   title: { default: "Geek Jr | Learn through play", template: "%s | Geek Jr" },
-  description: "Six thoughtful early-learning activities for ages 1–10, from Geek Protocol.",
+  description: "Seven thoughtful early-learning activities for ages 1–10, from Geek Protocol.",
   icons: { icon: `${assetBasePath}/favicon.svg` },
 };
 

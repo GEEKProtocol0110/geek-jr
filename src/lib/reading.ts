@@ -10,7 +10,7 @@ export type ReadingSkill = typeof READING_SKILLS[number]["id"];
 export type ReadingObservation = { level: ReadingLevel; date: number; independentDays: string[] };
 export type ReadingProgress = Record<string, Partial<Record<ReadingSkill, ReadingObservation>>>;
 export type ReadingLesson = {
-  id: string; title: string; letters: string; words: string[]; checkWord: string;
+  id: string; title: string; letters: string; reviewLetters?: string; words: string[]; checkWord: string;
   text: string[]; question: string; answer: string; helperWords: string[];
 };
 
@@ -25,6 +25,8 @@ export const READING_LESSONS: ReadingLesson[] = [
   { id: "fl", title: "A cat on a log", letters: "fl", words: ["fan", "leg", "fit"], checkWord: "lip", text: ["A cat sat on a log.", "It ran in fog."], question: "Where did the cat sit?", answer: "On a log. Act out sitting and running.", helperWords: [] },
   { id: "jvw", title: "Visit a vet", letters: "jvw", words: ["jam", "vet", "wet"], checkWord: "wag", text: ["A vet met a dog.", "It sat in a van."], question: "Who met the dog?", answer: "A vet. A vet helps animals stay well. ‘It’ refers to the dog here.", helperWords: [] },
   { id: "yzx", title: "A fox in a box", letters: "yzx", words: ["yes", "zip", "fox"], checkWord: "yak", text: ["A fox ran.", "It hid in a box."], question: "Where did the fox hide?", answer: "In a box. Retell the two things the fox did.", helperWords: [] },
+  { id: "four-sounds", title: "Four sounds, one word", letters: "", reviewLetters: "tlmsndcp", words: ["tent", "lamp", "sand"], checkWord: "camp", text: ["Sam sat in a tent.", "A lamp lit a mat."], question: "What lit the mat?", answer: "A lamp. Retell where Sam sat, then what the lamp did.", helperWords: [] },
+  { id: "blends", title: "Keep every sound", letters: "", reviewLetters: "frgstlp", words: ["frog", "stop", "flag"], checkWord: "grip", text: ["Pat got a flag.", "A frog sat on a log."], question: "Where did the frog sit?", answer: "On a log. Listen for both consonants at the start of frog; do not add a vowel between them.", helperWords: [] },
 ];
 
 export const SOUND_CUES: Record<string, string> = {

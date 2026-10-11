@@ -22,16 +22,18 @@ function shuffle<T>(items: T[]): T[] {
   return result;
 }
 
-function makeTiles(settings: GeekJrSettings): Tile[] {
-  const pool = (pairs as Pair[]).filter((pair) => pair.tier === settings.ageTier);
+function makeTiles(settings: GeekJrSettings, mode: "pictures" | "numbers" = "pictures"): Tile[] {
+  const limit = settings.ageTier === "1-2" ? 3 : settings.ageTier === "3-4" ? 5 : 10;
+  const pool: Pair[] = mode === "numbers" ? Array.from({ length: limit }, (_, i) => ({ id: `number-${i + 1}`, tier: settings.ageTier, label: `${i + 1}`, visual: "● ".repeat(i + 1).trim() })) : (pairs as Pair[]).filter((pair) => pair.tier === settings.ageTier);
   const selected = shuffle(pool).slice(0, Math.min(settings.ageTier === "1-2" ? 2 : settings.sessionSize, pool.length));
   return shuffle(selected.flatMap((pair) => [
     { ...pair, tileId: `${pair.id}-a` },
-    { ...pair, tileId: `${pair.id}-b` },
+    { ...pair, visual: mode === "numbers" ? pair.label : pair.visual, tileId: `${pair.id}-b` },
   ]));
 }
 
 export default function MemoryGame() {
+  const [mode, setMode] = useState<"pictures" | "numbers">("pictures");
   const [settings, setSettings] = useState(DEFAULT_SETTINGS);
   const [tiles, setTiles] = useState<Tile[]>([]);
   const [flipped, setFlipped] = useState<string[]>([]);
@@ -132,11 +134,11 @@ export default function MemoryGame() {
     }
   }
 
-  function playAgain() {
+  function playAgain(nextMode = mode) {
     if (hideTimeout.current) clearTimeout(hideTimeout.current);
     firstRef.current = null;
     lockRef.current = false;
-    setTiles(makeTiles(settings));
+    setTiles(makeTiles(settings, nextMode));
     setFlipped([]);
     setMatched([]);
     setRoundAttempts(0);
@@ -152,6 +154,8 @@ export default function MemoryGame() {
   return (
     <section className="mx-auto w-full max-w-xl rounded-2xl bg-white p-6 shadow-lg ring-1 ring-slate-200">
       <h1 className="text-2xl font-bold text-slate-900">Memory Match</h1>
+      <label className="mt-4 block font-semibold text-slate-800">Match pictures or numbers <select className="mt-2 block min-h-12 rounded-lg border-2 border-teal-700 p-2" value={mode} onChange={event => { const value = event.target.value as "pictures" | "numbers"; setMode(value); playAgain(value); }}><option value="pictures">Picture pairs</option><option value="numbers">Dots & number pairs</option></select></label>
+      {mode === "numbers" && <p className="mt-3 rounded-xl bg-amber-50 p-3 text-slate-800">Count the dots. Find the card with that number. A dot card and a number card belong together.</p>}
       <p className="mt-2 text-slate-600">{settings.ageTier === "1-2" ? "Look together. Tap two pictures that are the same. All pictures stay visible." : "Flip two cards. Find every matching pair."}</p>
       <div className="mt-4 flex flex-wrap gap-3 text-sm text-slate-700">
         <span className="rounded-lg bg-slate-100 px-3 py-2">Pairs: {matched.length}/{tiles.length / 2}</span>
@@ -170,7 +174,7 @@ export default function MemoryGame() {
               aria-label={visible ? tile.label : `Hidden card ${index + 1}`}
               className={`flex min-h-28 flex-col items-center justify-center rounded-xl border-2 p-3 text-slate-900 transition focus-visible:outline-4 focus-visible:outline-teal-500 ${matched.includes(tile.id) ? "border-emerald-500 bg-emerald-50" : flipped.includes(tile.tileId) ? "border-teal-700 bg-teal-100 ring-2 ring-teal-700" : visible ? "border-teal-200 bg-teal-50" : "border-slate-300 bg-slate-100 hover:bg-slate-200"}`}
             >
-              {visible ? <><span className="text-4xl" aria-hidden="true">{tile.visual}</span><span className="mt-1 font-semibold">{tile.label}</span></> : <span className="text-3xl" aria-hidden="true">?</span>}
+              {visible ? <><span className={mode === "numbers" ? "max-w-full break-words text-2xl" : "text-4xl"} aria-hidden="true">{tile.visual}</span>{mode === "pictures" && <span className="mt-1 font-semibold">{tile.label}</span>}</> : <span className="text-3xl" aria-hidden="true">?</span>}
             </button>
           );
         })}
@@ -181,7 +185,7 @@ export default function MemoryGame() {
           <h2 className="text-xl font-bold">{matched.length === tiles.length / 2 ? "All pairs found!" : "Time is up"}</h2>
           <p className="mt-2">This round: {roundCorrect} pairs in {roundAttempts} tries</p>
           <p>Best streak this round: {roundBest}</p>
-          <button type="button" onClick={playAgain} className="mt-4 rounded-lg bg-emerald-700 px-4 py-3 font-semibold text-white hover:bg-emerald-800">Play again</button><Link href="/" className="jr-end-home">Back to play</Link>
+          <button type="button" onClick={() => playAgain()} className="mt-4 rounded-lg bg-emerald-700 px-4 py-3 font-semibold text-white hover:bg-emerald-800">Play again</button><Link href="/" className="jr-end-home">Back to play</Link>
         </div>
       )}
     </section>

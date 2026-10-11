@@ -4,6 +4,7 @@ import ActivityIcon from "@/modules/common/ActivityIcon";
 import WordPicture from "@/modules/first-words/WordPicture";
 
 const activities = [
+  { title: "Counting Garden", description: "Touch flowers. Count and grow together.", href: "/counting", tint: "bg-lime-100" },
   { title: "Picture Cards", description: "Look at a picture. Say a word.", href: "/cards", tint: "bg-amber-100" },
   { title: "Reading Path", description: "Listen, blend and read together.", href: "/phonics", tint: "bg-sky-100" },
   { title: "Memory Match", description: "Find two pictures that match.", href: "/memory", tint: "bg-emerald-100" },
