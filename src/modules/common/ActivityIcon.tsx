@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 export default function ActivityIcon({ href }: { href: string }) {
   let drawing: ReactNode;
   switch (href) {
+    case "/counting": drawing = <><circle cx="8" cy="10" r="3"/><circle cx="22" cy="10" r="3"/><circle cx="15" cy="23" r="3"/><path d="M8 13v5m14-5v5m-7 8v4"/></>; break;
     case "/cards": drawing = <><rect x="4" y="5" width="24" height="22" rx="4" /><circle cx="11" cy="12" r="2" /><path d="m5 24 8-8 5 5 4-4 5 7" /></>; break;
     case "/phonics": drawing = <><path d="M4 25 11 7l7 18M7 18h8M22 9v16M22 12c8-4 8 9 0 6" /></>; break;
     case "/memory": drawing = <><rect x="3" y="7" width="11" height="18" rx="3" /><rect x="18" y="7" width="11" height="18" rx="3" /><path d="m6 16 3-3 3 3-3 3zm15 0 3-3 3 3-3 3z" /></>; break;

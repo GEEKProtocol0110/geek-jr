@@ -85,6 +85,7 @@ for (const lesson of READING_LESSONS) {
     assert.ok(!taught.has(letter), `Letter ${letter} introduced twice`);
     taught.add(letter);
   }
+  for (const letter of lesson.reviewLetters ?? "") assert.ok(taught.has(letter) && SOUND_CUES[letter], `Review requires a taught sound: ${letter}`);
   lesson.helperWords.forEach((word) => helpers.add(word));
   for (const word of [...lesson.words, lesson.checkWord, ...lesson.text.join(' ').toLowerCase().match(/[a-z]+/g)]) {
     if (helpers.has(word)) continue;
@@ -96,7 +97,7 @@ for (const lesson of READING_LESSONS) {
   assert.ok(!lesson.text.join(' ').toLowerCase().match(/[a-z]+/g).includes(lesson.checkWord), 'The transfer word must not appear in its reading text');
   assert.ok(lesson.question && lesson.answer, 'Connected text needs a comprehension discussion');
 }
-assert.equal(READING_LESSONS.length, 8);
+assert.equal(READING_LESSONS.length, 10);
 assert.equal(taught.size, 25);
 assert.deepEqual([...helpers], ['a']);
 assert.equal(suggestedReadingLesson({}), 0);
@@ -118,3 +119,20 @@ assert.deepEqual(cleanReadingProgress(reading), reading);
 const phonics = JSON.parse(await readFile('src/data/phonics/sounds.json', 'utf8'));
 assert.ok(!phonics.some((prompt) => prompt.choices.some((choice) => ['buh', 'kuh', 'tuh', 'mmm', 'sss', 'fff', 'rrr', 'zzz'].includes(choice))), 'Quiz choices must not use synthetic pseudo-phonemes');
 console.log('Reading checks: taught-letter coverage, transfer words, helper words, sound cues, two-day observations, regressions, and invalid storage passed');
+
+const { countingRound } = await loadTypeScript('src/lib/counting.ts');
+for (const age of ['1-2', '3-4', '5-7', '8-10']) for (let run = 0; run < 20; run++) {
+  const round = countingRound(age, 10, random);
+  assert.ok(round.length > 0 && round.length <= 10);
+  assert.equal(new Set(round.map(q => q.id)).size, round.length);
+  for (const q of round) {
+    assert.equal(q.answer, q.operation === 'add' ? q.left + q.right : q.operation === 'take' ? q.left - q.right : q.left);
+    assert.equal(q.choices.length, 3); assert.equal(new Set(q.choices).size, 3); assert.ok(q.choices.includes(q.answer));
+    assert.ok(q.choices.every(n => Number.isInteger(n) && n >= 0));
+    if (age !== '8-10') assert.equal(q.operation, 'count');
+    if (age === '1-2') assert.ok(q.left <= 3);
+    if (age === '3-4') assert.ok(q.left <= 5);
+  }
+}
+assert.equal(countingRound('5-7', 3, random).length, 3);
+console.log('Counting checks: age bounds, untimed round sizes, unique prompts, arithmetic and answer choices passed');

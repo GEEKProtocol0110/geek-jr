@@ -93,7 +93,7 @@ export default function ReadingPath() {
       <div className="mt-6 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
         <label className="grid gap-2 text-sm font-bold text-slate-800">Choose a starter lesson
           <select className="min-h-12 max-w-full rounded-xl border border-slate-300 bg-white px-3" value={index} onChange={(event) => begin(Number(event.target.value))}>
-            {READING_LESSONS.map((item, i) => <option key={item.id} value={i}>{i + 1}. {item.title} · {item.letters.split("").join(" ")}</option>)}
+            {READING_LESSONS.map((item, i) => <option key={item.id} value={i}>{i + 1}. {item.title} · {(item.reviewLetters ?? item.letters).split("").join(" ")}</option>)}
           </select>
         </label>
         <button className={button} onClick={() => begin(Math.max(0, suggested))}>Suggested review</button>
@@ -123,8 +123,8 @@ export default function ReadingPath() {
         <h2 className="mt-1 text-xl font-bold text-slate-950">{lesson.title}</h2>
 
         {step === 0 && <>
-          <p className="mt-3 text-slate-700">Parent: model each new sound, then let your child try. Say the sound rather than the letter name. Brief stop sounds do not need an extra “uh”.</p>
-          <div className="mt-5 flex flex-wrap gap-3">{lesson.letters.split("").map((letter) => <button key={letter} aria-label={`Parent cue for ${letter}`} aria-pressed={sound === letter} onClick={() => setSound(letter)} className={`${button} min-w-16 bg-white text-4xl`}>{letter}</button>)}</div>
+          <p className="mt-3 text-slate-700">Parent: model each sound, then let your child try. Say the sound rather than the letter name. Brief stop sounds do not need an extra “uh”.</p>
+          <div className="mt-5 flex flex-wrap gap-3">{(lesson.reviewLetters ?? lesson.letters).split("").map((letter) => <button key={letter} aria-label={`Parent cue for ${letter}`} aria-pressed={sound === letter} onClick={() => setSound(letter)} className={`${button} min-w-16 bg-white text-4xl`}>{letter}</button>)}</div>
           <p className="mt-4 min-h-12 text-sm text-teal-950" role="status">{sound ? SOUND_CUES[sound] : "Tap a letter for a parent pronunciation cue. These buttons do not play synthetic phonemes."}</p>
           <p className="mt-3 text-sm text-slate-700">Review sounds already introduced: {index ? taughtLetters(index - 1).split("").join(" · ") : "these first six"}. No need to cover every sound in one sitting.</p>
         </>}
@@ -154,7 +154,7 @@ export default function ReadingPath() {
         </>}
         {step === 4 && <>
           <p className="mt-3 text-slate-700">Observe a first attempt without clues. Ask for today’s letter sounds, try the new word below, spell a spoken word without seeing print, and read the lines and explain what happened. Leave anything you did not observe blank.</p>
-          <p className="mt-3 text-sm text-slate-700">Sound check: {lesson.letters.split("").join(" · ")}. The word below was not in this lesson’s practice list. If it is already familiar, leave blending unobserved until you can hear a fresh word being decoded.</p>
+          <p className="mt-3 text-sm text-slate-700">Sound check: {(lesson.reviewLetters ?? lesson.letters).split("").join(" · ")}. The word below was not in this lesson’s practice list. If it is already familiar, leave blending unobserved until you can hear a fresh word being decoded.</p>
           <p className="mt-4 rounded-xl bg-white p-5 text-center text-5xl font-bold text-slate-950" aria-label="New blending word">{lesson.checkWord}</p>
           <button className={`${button} mt-3`} onClick={() => { setBlendHelp(true); setObservations((previous) => ({ ...previous, blend: previous.blend === "independent" ? undefined : previous.blend })); }}>Show blending help</button>
           {blendHelp && <p className="mt-3 text-sm text-slate-700">Point to {lesson.checkWord.split("").join(" · ")}, say the sounds, then blend them together. Use “with help” for this attempt.</p>}

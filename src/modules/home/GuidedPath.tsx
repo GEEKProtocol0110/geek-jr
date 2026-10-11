@@ -13,23 +13,23 @@ const ages: AgeTier[] = ["1-2", "3-4", "5-7", "8-10"];
 const paths: Record<AgeTier, { href: string; title: string; focus: string }[]> = {
   "1-2": [
     { href: "/first-words", title: "First Words", focus: "Look, say and play together." },
-    { href: "/cards", title: "Picture Cards", focus: "Name what you see." },
+    { href: "/counting", title: "Counting Garden", focus: "Touch and count a few flowers." },
     { href: "/memory", title: "Picture matching", focus: "Find two pictures that match." },
   ],
   "3-4": [
     { href: "/first-words", title: "First Words", focus: "Explore a few familiar words." },
     { href: "/phonics", title: "Reading Path", focus: "Play with sounds; try letters when ready." },
-    { href: "/memory", title: "Memory Match", focus: "Flip a card. Find a pair." },
+    { href: "/counting", title: "Counting Garden", focus: "Count flowers and choose their number." },
   ],
   "5-7": [
     { href: "/phonics", title: "Reading Path", focus: "Blend, build and read together." },
-    { href: "/patterns", title: "Patterns & Logic", focus: "Spot what comes next." },
+    { href: "/counting", title: "Counting Garden", focus: "Touch, count and explore numbers." },
     { href: "/stories", title: "Story Sequence", focus: "Find the next part of the story." },
   ],
   "8-10": [
     { href: "/patterns", title: "Patterns & Logic", focus: "Try a little thinking puzzle." },
     { href: "/stories", title: "Story Sequence", focus: "Think about what happens next." },
-    { href: "/memory", title: "Memory Match", focus: "Remember a card. Find its pair." },
+    { href: "/counting", title: "Counting Garden", focus: "Explore adding and taking away." },
   ],
 };
 
