@@ -97,7 +97,7 @@ for (const lesson of READING_LESSONS) {
   assert.ok(!lesson.text.join(' ').toLowerCase().match(/[a-z]+/g).includes(lesson.checkWord), 'The transfer word must not appear in its reading text');
   assert.ok(lesson.question && lesson.answer, 'Connected text needs a comprehension discussion');
 }
-assert.equal(READING_LESSONS.length, 10);
+assert.equal(READING_LESSONS.length, 14);
 assert.equal(taught.size, 25);
 assert.deepEqual([...helpers], ['a']);
 assert.equal(suggestedReadingLesson({}), 0);

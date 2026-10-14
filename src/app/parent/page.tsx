@@ -80,6 +80,7 @@ export default function ParentPage() {
         </div>
         <p className="jr-parent-intro">Make play fit your day. Choose a starting level and a short round. Settings and progress stay in this browser.</p>
         <LearnerProfiles />
+        <div className="mt-5 rounded-2xl border border-teal-200 bg-teal-50 p-5"><h2 className="text-xl font-bold text-teal-950">Learning milestones & future GEEK rewards</h2><p className="mt-2 text-sm text-teal-900">Review First Words and Reading Path milestones for this learner. Proposed rewards stay separate from practice scores; no token payments are active.</p><Link href="/learning-rewards" className="mt-4 inline-block min-h-12 rounded-xl border border-teal-700 bg-white px-4 py-3 font-bold text-teal-950">Open learning reward plan →</Link></div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <label className="grid gap-2 text-sm font-semibold text-slate-700">
