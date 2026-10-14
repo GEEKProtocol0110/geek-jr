@@ -1,6 +1,6 @@
 // One local document makes migration and imports atomic. No child data leaves this browser.
 export const FAMILY_KEY = 'geekjr_family_v1';
-export const RECORD_KEYS = ['geekjr_settings_v2', 'geekjr_cards_leitner_v1', 'geekjr_first_words_v1', 'geekjr_reading_v1', 'geekjr_stats_phonics_v1', 'geekjr_stats_memory_v2', 'geekjr_stats_patterns_v1', 'geekjr_stats_stories_v1'] as const;
+export const RECORD_KEYS = ['geekjr_settings_v2', 'geekjr_cards_leitner_v1', 'geekjr_first_words_v1', 'geekjr_reading_v1', 'geekjr_stats_phonics_v1', 'geekjr_stats_memory_v2', 'geekjr_stats_patterns_v1', 'geekjr_stats_stories_v1', 'geekjr_reward_plan_v1'] as const;
 export type Learner = { id: string; name: string; records: Record<string, unknown> };
 export type Family = { version: 1; activeId: string; learners: Learner[] };
 const invalid = () => { throw new Error('This is not a supported Geek Jr backup. Nothing was changed.'); };
@@ -11,6 +11,7 @@ const level = (v: unknown) => ['not-yet', 'with-help', 'independent'].includes(v
 export function validRecord(key: string, value: unknown): boolean {
   if (!object(value)) return false;
   if (key === 'geekjr_settings_v2') return exact(value, ['sessionSize', 'timeLimitSec', 'ageTier', 'christianPacks']) && [3,5,10].includes(value.sessionSize as number) && [0,60,120,180].includes(value.timeLimitSec as number) && ['1-2','3-4','5-7','8-10'].includes(value.ageTier as string) && typeof value.christianPacks === 'boolean';
+  if (key === 'geekjr_reward_plan_v1') return exact(value,['version','reviews']) && value.version === 1 && object(value.reviews) && Object.keys(value.reviews).length <= 100 && Object.entries(value.reviews).every(([id,review]) => /^(words|reading)-[a-z0-9-]{1,60}$/.test(id) && object(review) && exact(review,['reviewedAt']) && integer(review.reviewedAt) && (review.reviewedAt as number) > 0);
   if (Object.keys(value).length > 200 || Object.keys(value).some(k => !/^[a-zA-Z0-9_-]{1,80}$/.test(k) || ['__proto__','constructor','prototype'].includes(k))) return false;
   if (key === 'geekjr_cards_leitner_v1') return Object.values(value).every(v => [1,2,3].includes(v as number));
   if (key === 'geekjr_first_words_v1') return Object.values(value).every(v => object(v) && exact(v,['box','lastSeen','seenCount','observations']) && [1,2,3,4,5].includes(v.box as number) && integer(v.lastSeen) && integer(v.seenCount) && (v.observations === undefined || object(v.observations) && exact(v.observations,['understands','speaks','print']) && Object.values(v.observations).every(o => object(o) && exact(o,['level','lastObserved','independentCount']) && level(o.level) && integer(o.lastObserved) && integer(o.independentCount))));

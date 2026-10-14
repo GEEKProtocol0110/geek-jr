@@ -56,21 +56,26 @@ export default function TimedChoicesGame({ title, storageKey, prompts }: TimedCh
   const [roundBestStreak, setRoundBestStreak] = useState(0);
   const [firstTryCorrect, setFirstTryCorrect] = useState(0);
   const firstTryRef = useRef(0);
+  const roundEnded = ended || (sessionPrompts.length > 0 && index >= sessionPrompts.length);
 
   useEffect(() => {
-    const loadedSettings = loadSettings();
-    const pool = prompts.filter((p) =>
-      p.tier === loadedSettings.ageTier && (p.pack !== "christian" || loadedSettings.christianPacks));
-    const preparedPrompts = prepareChoiceRound(pool, loadedSettings.sessionSize);
+    const frame = requestAnimationFrame(() => {
+      const loadedSettings = loadSettings();
+      const pool = prompts.filter((p) =>
+        p.tier === loadedSettings.ageTier && (p.pack !== "christian" || loadedSettings.christianPacks));
+      const preparedPrompts = prepareChoiceRound(pool, loadedSettings.sessionSize);
 
-    setSettings(loadedSettings);
-    setSessionPrompts(preparedPrompts);
-    setSecondsLeft(loadedSettings.timeLimitSec);
-    setHydrated(true);
+      setSettings(loadedSettings);
+      setSessionPrompts(preparedPrompts);
+      setSecondsLeft(loadedSettings.timeLimitSec);
+      setHydrated(true);
+    });
+    return () => cancelAnimationFrame(frame);
   }, [prompts]);
 
   useEffect(() => {
-    setStats(loadFromStorage<GameStatsByTier>(storageKey, EMPTY_BY_TIER));
+    const frame = requestAnimationFrame(() => setStats(loadFromStorage<GameStatsByTier>(storageKey, EMPTY_BY_TIER)));
+    return () => cancelAnimationFrame(frame);
   }, [storageKey]);
 
   useEffect(() => () => {
@@ -78,7 +83,7 @@ export default function TimedChoicesGame({ title, storageKey, prompts }: TimedCh
   }, []);
 
   useEffect(() => {
-    if (!hydrated || ended || settings.ageTier === "1-2" || settings.timeLimitSec === 0) {
+    if (!hydrated || roundEnded || settings.ageTier === "1-2" || settings.timeLimitSec === 0) {
       return;
     }
 
@@ -94,15 +99,9 @@ export default function TimedChoicesGame({ title, storageKey, prompts }: TimedCh
     }, 1000);
 
     return () => window.clearInterval(timer);
-  }, [ended, hydrated, settings.ageTier, settings.timeLimitSec]);
+  }, [roundEnded, hydrated, settings.ageTier, settings.timeLimitSec]);
 
   const current = sessionPrompts[index];
-
-  useEffect(() => {
-    if (!ended && index >= sessionPrompts.length && sessionPrompts.length > 0) {
-      setEnded(true);
-    }
-  }, [ended, index, sessionPrompts.length]);
 
   function updateStats(wasCorrect: boolean, nextStreak: number) {
     setStats((prev) => {
@@ -123,7 +122,7 @@ export default function TimedChoicesGame({ title, storageKey, prompts }: TimedCh
   }
 
   function handleChoice(choice: string) {
-    if (!current || ended || lockedRef.current || triedRef.current.has(choice)) {
+    if (!current || roundEnded || lockedRef.current || triedRef.current.has(choice)) {
       return;
     }
 
@@ -191,7 +190,7 @@ export default function TimedChoicesGame({ title, storageKey, prompts }: TimedCh
         <div className="rounded-lg bg-slate-100 p-2">Streak: {streak}</div>
       </div>
 
-      {!ended && current ? (
+      {!roundEnded && current ? (
         <>
           <div className="mt-6 rounded-xl bg-teal-50 p-4 text-center text-lg font-semibold text-teal-950">
             {current.prompt}

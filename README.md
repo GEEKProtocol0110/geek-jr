@@ -24,7 +24,7 @@ Geek Jr turns short practice sessions into a simple learning habit. Families see
 | Activity | What happens |
 | --- | --- |
 | **Picture Cards** | See a picture or prompt, hear a word, and mark it “Got it” or “Try it again” |
-| **Reading Path** | Parent sound play, ten guided sound-to-reading lessons, spelling, connected text, and optional letter/word quiz |
+| **Reading Path** | Parent sound play, fourteen guided sound-to-reading lessons, spelling, connected text, and optional letter/word quiz |
 | **Counting Garden** | Count illustrated objects and match number representations |
 | **Memory Match** | Match visible picture pairs for toddlers; flip cards for older learners |
 | **Patterns & Logic** | Choose what comes next |
@@ -114,3 +114,17 @@ The lesson approach draws on the [IES K–3 foundational reading guide](https://
 For grown-ups now supports up to eight named local learner profiles. Each keeps preferences, practice buckets, game totals, First Words and Reading Path observations separately. Earlier browser records are preserved under **My learner**; their original storage keys are left unchanged. Finish an activity before switching learners. A page keeps writing to the learner it started with even if another tab switches profiles.
 
 Download a JSON backup from the parent page, then choose it on another device to preview learner names before importing. Restore adds separate profiles with new IDs rather than overwriting saved learners; an empty default placeholder is replaced. Invalid, unsupported or oversized backups are rejected before any write. Corrupt existing records are preserved, and blocked/quota-limited storage cannot partially import a family. Nicknames and observation records are private family information: keep the downloaded file private. Profiles and backups do not provide accounts or automatic sync.
+
+## More reading depth and future learning rewards
+
+The Reading Path now has **14 lessons**: eight sound introductions and six reviews. Four new original reviews cover final consonant clusters, beginning/ending blends, short-vowel contrasts, and a three-sentence story with retelling. They use already introduced sound spellings and retain fresh check words, parent modeling, untimed play and separate skill observations. The IES K–3 guide remains the instructional reference; these additions have not had independent educator or learning-trial validation.
+
+For grown-ups links to **[Learning reward plan](https://geekjr.xyz/learning-rewards/)**. This is a local draft for Geek Jr's future participation in learn-and-earn, with a proposed **100 GEEK per unique learning milestone**. Six First Words themes accept parent-observed understanding, gestures or meaningful word attempts, including help, for every illustrated word. Fourteen Reading Path milestones use the existing independent-observation rule on two days per skill. These are proposed eligibility examples, not a finalized monetary reward policy or proof of mastery.
+
+Parents deliberately review ready milestones. There is one entry per milestone for each local learner; repeat play or review does not accumulate another amount. Newer evidence, removed observations or a renewed need for help can require review again; it still updates the same entry. The draft can show up to 20 reviewed milestones / 2,000 proposed GEEK per learner under these examples. It creates **no GEEK balance, payable claim, reserved funds, transaction or guaranteed entitlement**. There is no wallet field, signer, parent authentication, server verification or payout service. Anyone with access to this browser can edit local records; the parent page is a navigation affordance, not an authorization boundary.
+
+The review record is stored separately as `geekjr_reward_plan_v1` within each learner's existing local family document. Backups preserve it as planning history only. Restored copies cannot authorize a payment. Blocked writes leave saved family data unchanged and report that no review was saved. No learner data or reviews are transmitted.
+
+Real rewards require a reviewed HQ integration: verified parent-managed learner identities and receiving addresses, explicit guardian approval and privacy/eligibility rules, trusted milestone evidence, globally unique reward references across devices/restores, a dedicated funded budget, atomic liability reservation, bounded signing, transfer receipts and reconciliation. The existing HQ 70/30 fee policy allocates collected eligible fees; draft Jr rewards do not produce fees or reserve funding. Never treat local JSON, screenshots or backup profiles as payout evidence.
+
+`npm run check:content` includes reward planning regressions for participation, repeated reviews, changed/missing/future observations, malformed dates, bounded amounts, sibling isolation, backup restores, tab switches and failed storage writes. Lint and the production build also run in CI. The framework and its ESLint configuration are pinned together at 16.4.1 after the dependency audit flagged the older locked versions.
