@@ -10,6 +10,8 @@ Thank you for helping children learn. Small, clear improvements are the most use
 4. Run `npm run lint` and `npm run build`.
 5. Open a pull request with a short description, screenshots for visual changes, and manual steps for new activities.
 
+Pull requests are squash-merged.
+
 ## Learning content
 
 Read [content guidelines](docs/CONTENT_GUIDELINES.md). Put prompts in the relevant JSON file in `src/data`, assign a unique `id` and an age `tier`, and make the correct answer unambiguous. Keep wording short enough for an adult to read aloud. Content for ages 1–2 should use recognizable visual examples and support parent participation.
