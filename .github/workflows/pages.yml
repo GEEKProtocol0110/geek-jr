@@ -32,7 +32,7 @@ jobs:
       - run: node scripts/generate-legacy-redirects.mjs
       - run: touch out/.nojekyll
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: out
 
