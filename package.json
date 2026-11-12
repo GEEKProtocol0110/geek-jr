@@ -10,9 +10,9 @@
     "check:content": "node scripts/check-content.mjs"
   },
   "dependencies": {
-    "next": "16.4.1",
-    "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "next": "16.4.5",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
