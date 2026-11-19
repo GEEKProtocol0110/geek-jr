@@ -41,6 +41,7 @@ export default function RootLayout({
         <footer className="site-footer">
           <span>GEEK JR. <small>BY GEEK PROTOCOL</small></span>
           <p>Little questions. Big curiosity.</p>
+          <Link href="/privacy">Privacy for families</Link>
           <a href="https://geekprotocol.xyz" target="_blank" rel="noreferrer">Geek Protocol HQ · for older explorers <span aria-hidden="true">↗</span></a>
         </footer>
       </body>
